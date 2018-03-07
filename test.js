@@ -1,5 +1,5 @@
 // test
-import Adapter from "./adapter";
+import Adapter from "./src/adapter";
 import data1 from './data1.js';
 import data2 from './data1.js';
 
