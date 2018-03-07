@@ -1,5 +1,6 @@
-import Api from '../api';
-
+/*
+adapter
+ */
 class Adapter {
     constructor(promise) {
         this.taskQueue = [];
@@ -91,47 +92,11 @@ class Adapter {
         arr.forEach(key => {
             obj = obj[key];
         });
-        // console.log(obj, prop);
         return {
             obj,
             prop
         };
     }
 }
-
-// test
-setTimeout(() => {
-    new Adapter({
-        a: Api.getReportList({}),
-        b: Api.getThemeList({})
-    })
-        .remove(['a.message'])
-        .index([
-            {
-                targetPath: 'a.testIndex',
-                srcPath: 'b.data',
-                move: true  // 可选
-            }
-        ])
-        .value([
-            {
-                path: 'a.data.children.0.pid',
-                value: ['ha', 'test']
-            },
-            {
-                path: 'a.testValue',
-                value: ['ha', 'test']
-            },
-            {
-                path: 'a.testValue',
-                callBack(value) {   // 可选
-                    return [value[0] + '?', value[1] + '？'];
-                }
-            }
-        ])
-        .then(data => {
-            console.log(data);
-        });
-}, 1000);
 
 export default Adapter;
