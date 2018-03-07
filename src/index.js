@@ -20,7 +20,7 @@ class PathObject {
             let {obj, prop} = this._splitPath(path);
             let val = newValue;
 
-            // 传入相同长度数组则广播
+            // 传入相同长度数组则一一对应
             if (correspond && Array.isArray(newValue) && newValue.length === this.pathList.length) {
                 val = newValue[index];
             }
@@ -32,12 +32,12 @@ class PathObject {
             }
         });
     }
-    index(srcPathList, move, correspond) {
+    index(fromPathList, move, correspond) {
         // 一一对应
-        if (correspond && srcPathList.length === this.pathList.length) {
-            this.pathList.forEach((targetPath, index) => {
-                let src = this._splitPath(srcPathList[index]);
-                let target = this._splitPath(targetPath);
+        if (correspond && fromPathList.length === this.pathList.length) {
+            this.pathList.forEach((toPath, index) => {
+                let src = this._splitPath(fromPathList[index]);
+                let target = this._splitPath(toPath);
                 target.obj[target.prop] = this._deepClone(src.obj[src.prop]);
 
                 if (move) {
@@ -45,9 +45,9 @@ class PathObject {
                 }
             });
         } else {
-            this.pathList.forEach(targetPath => {
+            this.pathList.forEach(toPath => {
                 let newVal = [];
-                srcPathList.forEach(path => {
+                fromPathList.forEach(path => {
                     let src = this._splitPath(path);
                     newVal.push(src.obj[src.prop]);
                     if (move) {
@@ -56,7 +56,7 @@ class PathObject {
                 });
                 newVal = newVal.length > 1 ? newVal : newVal[0];
 
-                let target = this._splitPath(targetPath);
+                let target = this._splitPath(toPath);
                 target.obj[target.prop] = this._deepClone(newVal);
             });
         }
@@ -80,12 +80,12 @@ class PathObject {
         };
     }
     _spreadPath(arr, obj) {
-        if (arr.indexOf('+') === -1) {
+        if (arr.indexOf('[]') === -1) {
             this.pathList.push(arr.join('.'));
         } else {
             for (let i = 0; i < arr.length; i++) {
                 let key = arr[i];
-                if (key !== '+') {
+                if (key !== '[]') {
                     obj = obj[key];
                 } else {
                     obj.forEach((val, _index) => {
@@ -150,8 +150,8 @@ class Adapter {
         return this._setTask('_index', arguments);
     }
     _index(list = []) {
-        list.forEach(({ targetPath, srcPath, move = false, correspond = true }) => {
-            new PathObject(this.response, targetPath).index(new PathObject(this.response, srcPath).pathList, move, correspond);
+        list.forEach(({ toPath, fromPath, move = false, correspond = true }) => {
+            new PathObject(this.response, toPath).index(new PathObject(this.response, fromPath).pathList, move, correspond);
         });
     }
 
