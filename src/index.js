@@ -1,6 +1,105 @@
 /*
 adapter
  */
+
+class PathObject {
+    constructor(obj, path) {
+        this.srcObj = obj;
+        this.pathList = [];
+        this._spreadPath(path.split('.'), this.srcObj);
+    }
+
+    remove() {
+        this.pathList.forEach(path => {
+            let {obj, prop} = this._splitPath(path);
+            delete obj[prop];
+        });
+    }
+    value(newValue, callBack, correspond) {
+        this.pathList.forEach((path, index) => {
+            let {obj, prop} = this._splitPath(path);
+            let val = newValue;
+
+            // 传入相同长度数组则广播
+            if (correspond && Array.isArray(newValue) && newValue.length === this.pathList.length) {
+                val = newValue[index];
+            }
+
+            if (callBack) {
+                obj[prop] = callBack(obj[prop], index);
+            } else {
+                obj[prop] = val;
+            }
+        });
+    }
+    index(srcPathList, move, correspond) {
+        // 一一对应
+        if (correspond && srcPathList.length === this.pathList.length) {
+            this.pathList.forEach((targetPath, index) => {
+                let src = this._splitPath(srcPathList[index]);
+                let target = this._splitPath(targetPath);
+                target.obj[target.prop] = this._deepClone(src.obj[src.prop]);
+
+                if (move) {
+                    delete src.obj[src.prop];
+                }
+            });
+        } else {
+            this.pathList.forEach(targetPath => {
+                let newVal = [];
+                srcPathList.forEach(path => {
+                    let src = this._splitPath(path);
+                    newVal.push(src.obj[src.prop]);
+                    if (move) {
+                        delete src.obj[src.prop];
+                    }
+                });
+                newVal = newVal.length > 1 ? newVal : newVal[0];
+
+                let target = this._splitPath(targetPath);
+                target.obj[target.prop] = this._deepClone(newVal);
+            });
+        }
+    }
+
+    _deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+    _splitPath(path) {
+        let arr = path.split('.');
+        let prop = arr.pop();
+        let obj = this.srcObj;
+
+        arr.forEach(key => {
+            obj = obj[key];
+        });
+        // console.log(obj, prop);
+        return {
+            obj,
+            prop
+        };
+    }
+    _spreadPath(arr, obj) {
+        if (arr.indexOf('+') === -1) {
+            this.pathList.push(arr.join('.'));
+        } else {
+            for (let i = 0; i < arr.length; i++) {
+                let key = arr[i];
+                if (key !== '+') {
+                    obj = obj[key];
+                } else {
+                    obj.forEach((val, _index) => {
+                        let newArr = arr.slice();
+                        newArr[i] = _index;
+                        this._spreadPath(newArr, this.srcObj);
+                    });
+                    break;
+                }
+            }
+        }
+    }
+}
+
 class Adapter {
     constructor(promise) {
         this.taskQueue = [];
@@ -22,7 +121,8 @@ class Adapter {
     };
 
     _execTask() {
-        console.log('before exec', this._deepClone(this.response));
+        // console.log(this._deepClone(this.response));
+        // console.log('-------------');
         this.taskQueue.forEach(({taskName, argument}) => {
             this[taskName].apply(this, Array.prototype.slice.apply(argument));
         });
@@ -42,8 +142,7 @@ class Adapter {
 
     _remove(list = []) {
         list.forEach(path => {
-            let {obj, prop} = this._splitPath(this.response, path);
-            delete obj[prop];
+            new PathObject(this.response, path).remove();
         });
     }
 
@@ -51,14 +150,8 @@ class Adapter {
         return this._setTask('_index', arguments);
     }
     _index(list = []) {
-        list.forEach(({ targetPath, srcPath, move }) => {
-            let src = this._splitPath(this.response, srcPath);
-            let target = this._splitPath(this.response, targetPath);
-            target.obj[target.prop] = this._deepClone(src.obj[src.prop]);
-
-            if (move) {
-                delete src.obj[src.prop];
-            }
+        list.forEach(({ targetPath, srcPath, move = false, correspond = true }) => {
+            new PathObject(this.response, targetPath).index(new PathObject(this.response, srcPath).pathList, move, correspond);
         });
     }
 
@@ -66,13 +159,8 @@ class Adapter {
         return this._setTask('_value', arguments);
     }
     _value(list = []) {
-        list.forEach(({ path, value, callBack }) => {
-            let {obj, prop} = this._splitPath(this.response, path);
-            if (callBack) {
-                obj[prop] = callBack(obj[prop]);
-            } else {
-                obj[prop] = value;
-            }
+        list.forEach(({ path, value, callBack = null, correspond = true }) => {
+            new PathObject(this.response, path).value(value, callBack, correspond);
         });
     }
 
@@ -85,17 +173,6 @@ class Adapter {
 
     _deepClone(obj) {
         return JSON.parse(JSON.stringify(obj));
-    }
-    _splitPath(obj, str) {
-        let arr = str.split('.');
-        let prop = arr.pop();
-        arr.forEach(key => {
-            obj = obj[key];
-        });
-        return {
-            obj,
-            prop
-        };
     }
 }
 
