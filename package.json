@@ -1,10 +1,14 @@
 {
-  "name": "apiadapter",
+  "name": "api-adapt",
   "version": "1.0.0",
   "description": "接口数据转换",
   "main": "adapter.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/WWQ1993/apiAdapter"
   },
   "author": "",
   "license": "ISC"

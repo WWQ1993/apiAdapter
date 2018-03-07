@@ -1,4 +1,4 @@
-#ApiAdapter
+# ApiAdapter
 
 ## 功能
 * 重索引
@@ -11,12 +11,12 @@
 1. 单一请求
 
 <pre><code>
-let adapter = new Adapter(promise);
+const adapter = new Adapter(promise);
 </code></pre>
 2. 并行请求
 
 <pre><code>
-let adapter = new Adapter({
+const adapter = new Adapter({
     name1: promise1,
     name2: promise2
 });
