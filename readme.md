@@ -42,16 +42,16 @@ pathArray:Array，参见pathArray
 <pre><code>
 adapter.index([
     {
-        targetPath: path,
-        srcPath: path,
+        toPath: path,
+        fromPath: path,
         move: true  // 可选
     }
 ])
 </code></pre>
 
-targetPath:path，目标path
+toPath:path，目标path
 
-srcPath:path，源path
+fromPath:path，源path
 
 move:Boolean， 是否删除源path
 
