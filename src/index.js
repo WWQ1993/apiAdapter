@@ -1,5 +1,6 @@
 /*
-adapter
+Project: Adapter
+Author: WuWanQiang
  */
 
 class PathObject {
