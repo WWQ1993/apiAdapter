@@ -1,7 +1,6 @@
-// test
-import Adapter from "./src/adapter";
+import Adapter from "../src/index";
 import data1 from './data1.js';
-import data2 from './data1.js';
+import data2 from './data2.js';
 
 let promise1 = Promise.resolve(JSON.parse(data1));
 let promise2 = Promise.resolve(JSON.parse(data2));
@@ -43,6 +42,6 @@ setTimeout(() => {
             }
         ])
         .then(data => {
-            console.log(data);
+            console.log(JSON.stringify(data, null, 4));
         });
 }, 1000);
