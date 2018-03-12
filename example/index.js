@@ -43,5 +43,7 @@ setTimeout(() => {
         ])
         .then(data => {
             console.log(JSON.stringify(data, null, 4));
+        }).catch((e) => {
+            console.log(e);
         });
 }, 1000);

@@ -110,6 +110,12 @@ class Adapter {
             promise.then(data => {
                 this.response = data;
                 this._execTask();
+            }).catch((error) => {
+                if (this.catchCallback) {
+                    this.catchCallback(error);
+                } else {
+                    throw error;
+                }
             });
         } else {
             Promise.all(Object.values(promise)).then(res => {
@@ -117,6 +123,12 @@ class Adapter {
                     this.response[key] = res[index];
                 });
                 this._execTask();
+            }).catch((error) => {
+                if (this.catchCallback) {
+                    this.catchCallback(error);
+                } else {
+                    throw error;
+                }
             });
         }
     };
@@ -170,6 +182,13 @@ class Adapter {
     }
     _then(callBack) {
         callBack(this._deepClone(this.response));
+    }
+
+    catch(callBack) {
+        this.catchCallback = callBack;
+    }
+    _catch(error) {
+
     }
 
     _deepClone(obj) {

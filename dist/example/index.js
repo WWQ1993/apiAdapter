@@ -8,7 +8,7 @@
             exports: {}
         };
         factory(global.index, global.data1, global.data2);
-        global.test = mod.exports;
+        global.index = mod.exports;
     }
 })(this, function (_index, _data, _data3) {
     'use strict';
@@ -54,7 +54,9 @@
             }
         }]).then(function (data) {
             console.log(JSON.stringify(data, null, 4));
+        }).catch(function (e) {
+            console.log(e);
         });
     }, 1000);
 });
-//# sourceMappingURL=test.js.map
+//# sourceMappingURL=index.js.map

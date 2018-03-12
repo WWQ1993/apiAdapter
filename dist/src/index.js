@@ -188,6 +188,12 @@
                 promise.then(function (data) {
                     _this5.response = data;
                     _this5._execTask();
+                }).catch(function (error) {
+                    if (_this5.catchCallback) {
+                        _this5.catchCallback(error);
+                    } else {
+                        throw error;
+                    }
                 });
             } else {
                 Promise.all(Object.values(promise)).then(function (res) {
@@ -195,6 +201,12 @@
                         _this5.response[key] = res[index];
                     });
                     _this5._execTask();
+                }).catch(function (error) {
+                    if (_this5.catchCallback) {
+                        _this5.catchCallback(error);
+                    } else {
+                        throw error;
+                    }
                 });
             }
         }
@@ -294,6 +306,14 @@
             value: function _then(callBack) {
                 callBack(this._deepClone(this.response));
             }
+        }, {
+            key: 'catch',
+            value: function _catch(callBack) {
+                this.catchCallback = callBack;
+            }
+        }, {
+            key: '_catch',
+            value: function _catch(error) {}
         }, {
             key: '_deepClone',
             value: function _deepClone(obj) {
