@@ -65,7 +65,7 @@
             }
         }, {
             key: 'value',
-            value: function value(newValue, callBack, correspond) {
+            value: function value(newValue, callback, correspond) {
                 var _this2 = this;
 
                 this.pathList.forEach(function (path, index) {
@@ -80,8 +80,8 @@
                         val = newValue[index];
                     }
 
-                    if (callBack) {
-                        obj[prop] = callBack(obj[prop], index);
+                    if (callback) {
+                        obj[prop] = callback(obj[prop], index);
                     } else {
                         obj[prop] = val;
                     }
@@ -189,8 +189,8 @@
                     _this5.response = data;
                     _this5._execTask();
                 }).catch(function (error) {
-                    if (_this5.catchCallback) {
-                        _this5.catchCallback(error);
+                    if (_this5.catchcallback) {
+                        _this5.catchcallback(error);
                     } else {
                         throw error;
                     }
@@ -202,8 +202,8 @@
                     });
                     _this5._execTask();
                 }).catch(function (error) {
-                    if (_this5.catchCallback) {
-                        _this5.catchCallback(error);
+                    if (_this5.catchcallback) {
+                        _this5.catchcallback(error);
                     } else {
                         throw error;
                     }
@@ -288,12 +288,12 @@
                 list.forEach(function (_ref3) {
                     var path = _ref3.path,
                         value = _ref3.value,
-                        _ref3$callBack = _ref3.callBack,
-                        callBack = _ref3$callBack === undefined ? null : _ref3$callBack,
+                        _ref3$callback = _ref3.callback,
+                        callback = _ref3$callback === undefined ? null : _ref3$callback,
                         _ref3$correspond = _ref3.correspond,
                         correspond = _ref3$correspond === undefined ? true : _ref3$correspond;
 
-                    new PathObject(_this9.response, path).value(value, callBack, correspond);
+                    new PathObject(_this9.response, path).value(value, callback, correspond);
                 });
             }
         }, {
@@ -303,13 +303,13 @@
             }
         }, {
             key: '_then',
-            value: function _then(callBack) {
-                callBack(this._deepClone(this.response));
+            value: function _then(callback) {
+                callback(this._deepClone(this.response));
             }
         }, {
             key: 'catch',
-            value: function _catch(callBack) {
-                this.catchCallback = callBack;
+            value: function _catch(callback) {
+                this.catchcallback = callback;
             }
         }, {
             key: '_catch',

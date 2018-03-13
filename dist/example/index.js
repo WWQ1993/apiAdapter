@@ -48,7 +48,7 @@
             value: ['ha', 'test', '99']
         }, {
             path: 'a.data.children.[].id',
-            callBack: function callBack(value, index) {
+            callback: function callback(value, index) {
                 // 可选
                 return value + index;
             }

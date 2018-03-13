@@ -16,7 +16,7 @@ class PathObject {
             delete obj[prop];
         });
     }
-    value(newValue, callBack, correspond) {
+    value(newValue, callback, correspond) {
         this.pathList.forEach((path, index) => {
             let {obj, prop} = this._splitPath(path);
             let val = newValue;
@@ -26,8 +26,8 @@ class PathObject {
                 val = newValue[index];
             }
 
-            if (callBack) {
-                obj[prop] = callBack(obj[prop], index);
+            if (callback) {
+                obj[prop] = callback(obj[prop], index);
             } else {
                 obj[prop] = val;
             }
@@ -111,8 +111,8 @@ class Adapter {
                 this.response = data;
                 this._execTask();
             }).catch((error) => {
-                if (this.catchCallback) {
-                    this.catchCallback(error);
+                if (this.catchcallback) {
+                    this.catchcallback(error);
                 } else {
                     throw error;
                 }
@@ -124,8 +124,8 @@ class Adapter {
                 });
                 this._execTask();
             }).catch((error) => {
-                if (this.catchCallback) {
-                    this.catchCallback(error);
+                if (this.catchcallback) {
+                    this.catchcallback(error);
                 } else {
                     throw error;
                 }
@@ -172,20 +172,20 @@ class Adapter {
         return this._setTask('_value', arguments);
     }
     _value(list = []) {
-        list.forEach(({ path, value, callBack = null, correspond = true }) => {
-            new PathObject(this.response, path).value(value, callBack, correspond);
+        list.forEach(({ path, value, callback = null, correspond = true }) => {
+            new PathObject(this.response, path).value(value, callback, correspond);
         });
     }
 
     then() {
         return this._setTask('_then', arguments);
     }
-    _then(callBack) {
-        callBack(this._deepClone(this.response));
+    _then(callback) {
+        callback(this._deepClone(this.response));
     }
 
-    catch(callBack) {
-        this.catchCallback = callBack;
+    catch(callback) {
+        this.catchcallback = callback;
     }
     _catch(error) {
 

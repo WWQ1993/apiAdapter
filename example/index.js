@@ -36,7 +36,7 @@ setTimeout(() => {
             },
             {
                 path: 'a.data.children.[].id',
-                callBack(value, index) {   // 可选
+                callback(value, index) {   // 可选
                     return value + index;
                 }
             }

@@ -64,7 +64,7 @@ adapter.value([
    },
    {
        path: path,
-       callBack(oldValue) {   // 可选
+       callback(oldValue) {   // 可选
            return newValue;
        }
    }
@@ -73,7 +73,7 @@ adapter.value([
 
 path:path，值的path
 value: 新值
-callBack:function，修改值时可选的回调函数，参数为原值，返回新值
+callback:function，修改值时可选的回调函数，参数为原值，返回新值
 
 ### pathArray
 pathArray:Array，path数组
