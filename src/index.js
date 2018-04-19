@@ -102,15 +102,17 @@ class PathObject {
 }
 
 class Adapter {
-    constructor(promise) {
-        this.taskQueue = [];
 
-        this.response = {};
+    taskQueue = [];
+
+    response = {};
+
+    constructor(promise) {
         if (promise instanceof Promise) {
             promise.then(data => {
                 this.response = data;
                 this._execTask();
-            }).catch((error) => {
+            }).catch(error => {
                 if (this.catchcallback) {
                     this.catchcallback(error);
                 } else {
@@ -123,7 +125,7 @@ class Adapter {
                     this.response[key] = res[index];
                 });
                 this._execTask();
-            }).catch((error) => {
+            }).catch(error => {
                 if (this.catchcallback) {
                     this.catchcallback(error);
                 } else {
@@ -131,11 +133,10 @@ class Adapter {
                 }
             });
         }
-    };
+    }
 
     _execTask() {
-        // console.log(this._deepClone(this.response));
-        // console.log('-------------');
+
         this.taskQueue.forEach(({taskName, argument}) => {
             this[taskName].apply(this, Array.prototype.slice.apply(argument));
         });
@@ -196,4 +197,11 @@ class Adapter {
     }
 }
 
+class _DataAdapter extends Adapter {
+    constructor(data) {
+        super(Promise.resolve(data));
+    }
+};
+
 export default Adapter;
+export const DataAdapter = _DataAdapter;

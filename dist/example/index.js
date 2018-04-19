@@ -28,35 +28,40 @@
     var promise1 = Promise.resolve(JSON.parse(_data2.default));
     var promise2 = Promise.resolve(JSON.parse(_data4.default));
 
-    setTimeout(function () {
-        new _index2.default({
-            a: promise1,
-            b: promise2
-        }).index([{
-            toPath: 'pathId',
-            fromPath: 'a.data.children.[].attributes.pathId',
-            correspond: false // 可选：将多项目标数据拼成数组后赋值给源数据
-        }, {
-            toPath: 'a.data.children.[].pid',
-            fromPath: 'a.data.children.[].attributes.pathId'
-        }]).remove(['a.message']).index([{
-            toPath: 'a.testIndex',
-            fromPath: 'b.data',
-            move: true // 可选
-        }]).value([{
-            path: 'a.data.children.[].id', // 等长会一一对应
-            value: ['ha', 'test', '99']
-        }, {
-            path: 'a.data.children.[].id',
-            callback: function callback(value, index) {
-                // 可选
-                return value + index;
-            }
-        }]).then(function (data) {
-            console.log(JSON.stringify(data, null, 4));
-        }).catch(function (e) {
-            console.log(e);
-        });
-    }, 1000);
+    new _index.DataAdapter({
+        a: JSON.parse(_data2.default),
+        b: JSON.parse(_data4.default)
+    }).then(function (data) {
+        console.log(JSON.stringify(data, null, 4));
+    });
+
+    new _index2.default({
+        a: promise1,
+        b: promise2
+    }).index([{
+        toPath: 'pathId',
+        fromPath: 'a.data.children.[].attributes.pathId',
+        correspond: false // 可选：将多项目标数据拼成数组后赋值给源数据
+    }, {
+        toPath: 'a.data.children.[].pid',
+        fromPath: 'a.data.children.[].attributes.pathId'
+    }]).remove(['a.message']).index([{
+        toPath: 'a.testIndex',
+        fromPath: 'b.data',
+        move: true // 可选
+    }]).value([{
+        path: 'a.data.children.[].id', // 等长会一一对应
+        value: ['ha', 'test', '99']
+    }, {
+        path: 'a.data.children.[].id',
+        callback: function callback(value, index) {
+            // 可选
+            return value + index;
+        }
+    }]).then(function (data) {
+        console.log(JSON.stringify(data, null, 4));
+    }).catch(function (e) {
+        console.log(e);
+    });
 });
 //# sourceMappingURL=index.js.map

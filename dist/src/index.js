@@ -17,6 +17,30 @@
         value: true
     });
 
+    function _possibleConstructorReturn(self, call) {
+        if (!self) {
+            throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+        }
+
+        return call && (typeof call === "object" || typeof call === "function") ? call : self;
+    }
+
+    function _inherits(subClass, superClass) {
+        if (typeof superClass !== "function" && superClass !== null) {
+            throw new TypeError("Super expression must either be null or a function, not " + typeof superClass);
+        }
+
+        subClass.prototype = Object.create(superClass && superClass.prototype, {
+            constructor: {
+                value: subClass,
+                enumerable: false,
+                writable: true,
+                configurable: true
+            }
+        });
+        if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+    }
+
     function _classCallCheck(instance, Constructor) {
         if (!(instance instanceof Constructor)) {
             throw new TypeError("Cannot call a class as a function");
@@ -182,8 +206,8 @@
             _classCallCheck(this, Adapter);
 
             this.taskQueue = [];
-
             this.response = {};
+
             if (promise instanceof Promise) {
                 promise.then(function (data) {
                     _this5.response = data;
@@ -216,8 +240,6 @@
             value: function _execTask() {
                 var _this6 = this;
 
-                // console.log(this._deepClone(this.response));
-                // console.log('-------------');
                 this.taskQueue.forEach(function (_ref) {
                     var taskName = _ref.taskName,
                         argument = _ref.argument;
@@ -324,6 +346,21 @@
         return Adapter;
     }();
 
+    var _DataAdapter = function (_Adapter) {
+        _inherits(_DataAdapter, _Adapter);
+
+        function _DataAdapter(data) {
+            _classCallCheck(this, _DataAdapter);
+
+            return _possibleConstructorReturn(this, (_DataAdapter.__proto__ || Object.getPrototypeOf(_DataAdapter)).call(this, Promise.resolve(data)));
+        }
+
+        return _DataAdapter;
+    }(Adapter);
+
+    ;
+
     exports.default = Adapter;
+    var DataAdapter = exports.DataAdapter = _DataAdapter;
 });
 //# sourceMappingURL=index.js.map
