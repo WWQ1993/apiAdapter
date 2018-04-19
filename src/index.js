@@ -198,10 +198,16 @@ class Adapter {
 }
 
 class _DataAdapter extends Adapter {
-    constructor(data) {
+    constructor(data, rules) {
         super(Promise.resolve(data));
+        rules && this.dealRules(rules);
     }
-};
+    dealRules(rules) {
+        for (let fnName in rules) {
+            this[fnName](rules[fnName]);
+        }
+    }
+}
 
 export default Adapter;
 export const DataAdapter = _DataAdapter;

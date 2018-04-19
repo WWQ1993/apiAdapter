@@ -349,16 +349,26 @@
     var _DataAdapter = function (_Adapter) {
         _inherits(_DataAdapter, _Adapter);
 
-        function _DataAdapter(data) {
+        function _DataAdapter(data, rules) {
             _classCallCheck(this, _DataAdapter);
 
-            return _possibleConstructorReturn(this, (_DataAdapter.__proto__ || Object.getPrototypeOf(_DataAdapter)).call(this, Promise.resolve(data)));
+            var _this10 = _possibleConstructorReturn(this, (_DataAdapter.__proto__ || Object.getPrototypeOf(_DataAdapter)).call(this, Promise.resolve(data)));
+
+            rules && _this10.dealRules(rules);
+            return _this10;
         }
+
+        _createClass(_DataAdapter, [{
+            key: 'dealRules',
+            value: function dealRules(rules) {
+                for (var fnName in rules) {
+                    this[fnName](rules[fnName]);
+                }
+            }
+        }]);
 
         return _DataAdapter;
     }(Adapter);
-
-    ;
 
     exports.default = Adapter;
     var DataAdapter = exports.DataAdapter = _DataAdapter;

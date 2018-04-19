@@ -5,10 +5,25 @@ import data2 from './data2.js';
 let promise1 = Promise.resolve(JSON.parse(data1));
 let promise2 = Promise.resolve(JSON.parse(data2));
 
-new DataAdapter({
-    a: JSON.parse(data1),
-    b: JSON.parse(data2)
-}).then(data => {
+new DataAdapter(
+    {
+        a: JSON.parse(data1),
+        b: JSON.parse(data2)
+    },
+    {
+        index: [
+            {
+                toPath: 'pathId',
+                fromPath: 'a.data.children.[].attributes.pathId',
+                correspond: false // 可选：将多项目标数据拼成数组后赋值给源数据
+            },
+            {
+                toPath: 'a.data.children.[].pid',
+                fromPath: 'a.data.children.[].attributes.pathId'
+            }
+        ]
+    }
+).then(data => {
     console.log(JSON.stringify(data, null, 4));
 });
 
@@ -48,7 +63,7 @@ new Adapter({
     }
 ])
 .then(data => {
-    console.log(JSON.stringify(data, null, 4));
+    // console.log(JSON.stringify(data, null, 4));
 }).catch((e) => {
-    console.log(e);
+    // console.log(e);
 });

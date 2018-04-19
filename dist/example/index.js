@@ -31,6 +31,15 @@
     new _index.DataAdapter({
         a: JSON.parse(_data2.default),
         b: JSON.parse(_data4.default)
+    }, {
+        index: [{
+            toPath: 'pathId',
+            fromPath: 'a.data.children.[].attributes.pathId',
+            correspond: false // 可选：将多项目标数据拼成数组后赋值给源数据
+        }, {
+            toPath: 'a.data.children.[].pid',
+            fromPath: 'a.data.children.[].attributes.pathId'
+        }]
     }).then(function (data) {
         console.log(JSON.stringify(data, null, 4));
     });
@@ -59,9 +68,9 @@
             return value + index;
         }
     }]).then(function (data) {
-        console.log(JSON.stringify(data, null, 4));
+        // console.log(JSON.stringify(data, null, 4));
     }).catch(function (e) {
-        console.log(e);
+        // console.log(e);
     });
 });
 //# sourceMappingURL=index.js.map
