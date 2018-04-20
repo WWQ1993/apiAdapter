@@ -94,6 +94,7 @@ path:String, 对象键名以.连接而成， 例如：
 c的path为：a.b.0.c
 
 ## 更新日志
+* [2.2.0] index: from/to; value: to
 * [2.1.3] DataAdapter可传入rules作为第二个参数
 * [2.1.2] Feature: DataAdapter
 * [2.1.1] callback

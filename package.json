@@ -1,6 +1,6 @@
 {
   "name": "api-adapt",
-  "version": "2.1.3",
+  "version": "2.2.0",
   "description": "接口数据转换",
   "main": "dist/src/index.js",
   "scripts": {

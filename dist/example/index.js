@@ -33,12 +33,16 @@
         b: JSON.parse(_data4.default)
     }, {
         index: [{
-            toPath: 'pathId',
-            fromPath: 'a.data.children.[].attributes.pathId',
+            to: 'pathId',
+            from: 'a.data.children.[].attributes.pathId',
             correspond: false // 可选：将多项目标数据拼成数组后赋值给源数据
         }, {
             toPath: 'a.data.children.[].pid',
             fromPath: 'a.data.children.[].attributes.pathId'
+        }],
+        value: [{
+            to: 'testValue',
+            value: 'dd'
         }]
     }).then(function (data) {
         console.log(JSON.stringify(data, null, 4));

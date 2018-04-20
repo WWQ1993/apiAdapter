@@ -286,13 +286,15 @@
 
                 list.forEach(function (_ref2) {
                     var toPath = _ref2.toPath,
+                        to = _ref2.to,
                         fromPath = _ref2.fromPath,
+                        from = _ref2.from,
                         _ref2$move = _ref2.move,
                         move = _ref2$move === undefined ? false : _ref2$move,
                         _ref2$correspond = _ref2.correspond,
                         correspond = _ref2$correspond === undefined ? true : _ref2$correspond;
 
-                    new PathObject(_this8.response, toPath).index(new PathObject(_this8.response, fromPath).pathList, move, correspond);
+                    new PathObject(_this8.response, toPath || to).index(new PathObject(_this8.response, fromPath || from).pathList, move, correspond);
                 });
             }
         }, {
@@ -309,13 +311,14 @@
 
                 list.forEach(function (_ref3) {
                     var path = _ref3.path,
+                        to = _ref3.to,
                         value = _ref3.value,
                         _ref3$callback = _ref3.callback,
                         callback = _ref3$callback === undefined ? null : _ref3$callback,
                         _ref3$correspond = _ref3.correspond,
                         correspond = _ref3$correspond === undefined ? true : _ref3$correspond;
 
-                    new PathObject(_this9.response, path).value(value, callback, correspond);
+                    new PathObject(_this9.response, path || to).value(value, callback, correspond);
                 });
             }
         }, {

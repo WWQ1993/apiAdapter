@@ -164,8 +164,8 @@ class Adapter {
         return this._setTask('_index', arguments);
     }
     _index(list = []) {
-        list.forEach(({ toPath, fromPath, move = false, correspond = true }) => {
-            new PathObject(this.response, toPath).index(new PathObject(this.response, fromPath).pathList, move, correspond);
+        list.forEach(({ toPath, to, fromPath, from, move = false, correspond = true }) => {
+            new PathObject(this.response, toPath || to).index(new PathObject(this.response, fromPath || from).pathList, move, correspond);
         });
     }
 
@@ -173,8 +173,8 @@ class Adapter {
         return this._setTask('_value', arguments);
     }
     _value(list = []) {
-        list.forEach(({ path, value, callback = null, correspond = true }) => {
-            new PathObject(this.response, path).value(value, callback, correspond);
+        list.forEach(({ path, to, value, callback = null, correspond = true }) => {
+            new PathObject(this.response, path || to).value(value, callback, correspond);
         });
     }
 
