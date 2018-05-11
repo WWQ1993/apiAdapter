@@ -103,10 +103,52 @@ class PathObject {
 
 class Adapter {
 
-    taskQueue = [];
-
     response = {};
 
+    constructor(data = "") {
+        this.response = this._deepClone(data);
+    }
+
+    _remove(list = []) {
+        list.forEach(path => {
+            new PathObject(this.response, path).remove();
+        });
+    }
+
+    _index(list = []) {
+        list.forEach(({ toPath, to, fromPath, from, move = false, correspond = true }) => {
+            new PathObject(this.response, toPath || to).index(new PathObject(this.response, fromPath || from).pathList, move, correspond);
+        });
+    }
+
+    _value(list = []) {
+        list.forEach(({ path, to, value, callback = null, correspond = true }) => {
+            new PathObject(this.response, path || to).value(value, callback, correspond);
+        });
+    }
+
+    _deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+}
+
+class _DataAdapter extends Adapter {
+    constructor(data, rules) {
+        super(data);
+
+        rules && this.dealRules(rules);
+        return this.response;
+    }
+    dealRules(rules) {
+        for (let fnName in rules) {
+            this['_' + fnName](rules[fnName]);
+        }
+    }
+}
+
+class _PromiseAdapter {
+    taskQueue = [];
+    response = {};
     constructor(promise) {
         if (promise instanceof Promise) {
             promise.then(data => {
@@ -135,6 +177,28 @@ class Adapter {
         }
     }
 
+    _remove(list = []) {
+        list.forEach(path => {
+            new PathObject(this.response, path).remove();
+        });
+    }
+
+    _index(list = []) {
+        list.forEach(({ toPath, to, fromPath, from, move = false, correspond = true }) => {
+            new PathObject(this.response, toPath || to).index(new PathObject(this.response, fromPath || from).pathList, move, correspond);
+        });
+    }
+
+    _value(list = []) {
+        list.forEach(({ path, to, value, callback = null, correspond = true }) => {
+            new PathObject(this.response, path || to).value(value, callback, correspond);
+        });
+    }
+
+    _deepClone(obj) {
+        return JSON.parse(JSON.stringify(obj));
+    }
+
     _execTask() {
 
         this.taskQueue.forEach(({taskName, argument}) => {
@@ -149,65 +213,25 @@ class Adapter {
         });
         return this;
     }
-
     remove() {
         return this._setTask('_remove', arguments);
     }
-
-    _remove(list = []) {
-        list.forEach(path => {
-            new PathObject(this.response, path).remove();
-        });
-    }
-
     index() {
         return this._setTask('_index', arguments);
     }
-    _index(list = []) {
-        list.forEach(({ toPath, to, fromPath, from, move = false, correspond = true }) => {
-            new PathObject(this.response, toPath || to).index(new PathObject(this.response, fromPath || from).pathList, move, correspond);
-        });
-    }
-
     value() {
         return this._setTask('_value', arguments);
-    }
-    _value(list = []) {
-        list.forEach(({ path, to, value, callback = null, correspond = true }) => {
-            new PathObject(this.response, path || to).value(value, callback, correspond);
-        });
-    }
-
-    then() {
-        return this._setTask('_then', arguments);
     }
     _then(callback) {
         callback(this._deepClone(this.response));
     }
-
+    then() {
+        return this._setTask('_then', arguments);
+    }
     catch(callback) {
         this.catchcallback = callback;
     }
-    _catch(error) {
-
-    }
-
-    _deepClone(obj) {
-        return JSON.parse(JSON.stringify(obj));
-    }
 }
 
-class _DataAdapter extends Adapter {
-    constructor(data, rules) {
-        super(Promise.resolve(data));
-        rules && this.dealRules(rules);
-    }
-    dealRules(rules) {
-        for (let fnName in rules) {
-            this[fnName](rules[fnName]);
-        }
-    }
-}
-
-export default Adapter;
+export default _PromiseAdapter;
 export const DataAdapter = _DataAdapter;

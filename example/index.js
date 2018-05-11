@@ -5,7 +5,7 @@ import data2 from './data2.js';
 let promise1 = Promise.resolve(JSON.parse(data1));
 let promise2 = Promise.resolve(JSON.parse(data2));
 
-new DataAdapter(
+let data = new DataAdapter(
     {
         a: JSON.parse(data1),
         b: JSON.parse(data2)
@@ -29,9 +29,9 @@ new DataAdapter(
             }
         ]
     }
-).then(data => {
-    console.log(JSON.stringify(data, null, 4));
-});
+);
+console.log(JSON.stringify(data, null, 4));
+
 
 new Adapter({
     a: promise1,
@@ -69,7 +69,7 @@ new Adapter({
     }
 ])
 .then(data => {
-    // console.log(JSON.stringify(data, null, 4));
+    console.log(JSON.stringify(data, null, 4));
 }).catch((e) => {
-    // console.log(e);
+    console.log(e);
 });

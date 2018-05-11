@@ -1,7 +1,7 @@
 {
   "name": "api-adapt",
-  "version": "2.2.0",
-  "description": "接口数据转换",
+  "version": "3.0.0",
+  "description": "数据转换",
   "main": "dist/src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

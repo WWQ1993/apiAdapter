@@ -200,21 +200,118 @@
     }();
 
     var Adapter = function () {
-        function Adapter(promise) {
-            var _this5 = this;
+        function Adapter() {
+            var data = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : "";
 
             _classCallCheck(this, Adapter);
+
+            this.response = {};
+
+            this.response = this._deepClone(data);
+        }
+
+        _createClass(Adapter, [{
+            key: '_remove',
+            value: function _remove() {
+                var _this5 = this;
+
+                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+                list.forEach(function (path) {
+                    new PathObject(_this5.response, path).remove();
+                });
+            }
+        }, {
+            key: '_index',
+            value: function _index() {
+                var _this6 = this;
+
+                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+                list.forEach(function (_ref) {
+                    var toPath = _ref.toPath,
+                        to = _ref.to,
+                        fromPath = _ref.fromPath,
+                        from = _ref.from,
+                        _ref$move = _ref.move,
+                        move = _ref$move === undefined ? false : _ref$move,
+                        _ref$correspond = _ref.correspond,
+                        correspond = _ref$correspond === undefined ? true : _ref$correspond;
+
+                    new PathObject(_this6.response, toPath || to).index(new PathObject(_this6.response, fromPath || from).pathList, move, correspond);
+                });
+            }
+        }, {
+            key: '_value',
+            value: function _value() {
+                var _this7 = this;
+
+                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+                list.forEach(function (_ref2) {
+                    var path = _ref2.path,
+                        to = _ref2.to,
+                        value = _ref2.value,
+                        _ref2$callback = _ref2.callback,
+                        callback = _ref2$callback === undefined ? null : _ref2$callback,
+                        _ref2$correspond = _ref2.correspond,
+                        correspond = _ref2$correspond === undefined ? true : _ref2$correspond;
+
+                    new PathObject(_this7.response, path || to).value(value, callback, correspond);
+                });
+            }
+        }, {
+            key: '_deepClone',
+            value: function _deepClone(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            }
+        }]);
+
+        return Adapter;
+    }();
+
+    var _DataAdapter = function (_Adapter) {
+        _inherits(_DataAdapter, _Adapter);
+
+        function _DataAdapter(data, rules) {
+            var _ret2;
+
+            _classCallCheck(this, _DataAdapter);
+
+            var _this8 = _possibleConstructorReturn(this, (_DataAdapter.__proto__ || Object.getPrototypeOf(_DataAdapter)).call(this, data));
+
+            rules && _this8.dealRules(rules);
+            return _ret2 = _this8.response, _possibleConstructorReturn(_this8, _ret2);
+        }
+
+        _createClass(_DataAdapter, [{
+            key: 'dealRules',
+            value: function dealRules(rules) {
+                for (var fnName in rules) {
+                    this['_' + fnName](rules[fnName]);
+                }
+            }
+        }]);
+
+        return _DataAdapter;
+    }(Adapter);
+
+    var _PromiseAdapter = function () {
+        function _PromiseAdapter(promise) {
+            var _this9 = this;
+
+            _classCallCheck(this, _PromiseAdapter);
 
             this.taskQueue = [];
             this.response = {};
 
             if (promise instanceof Promise) {
                 promise.then(function (data) {
-                    _this5.response = data;
-                    _this5._execTask();
+                    _this9.response = data;
+                    _this9._execTask();
                 }).catch(function (error) {
-                    if (_this5.catchcallback) {
-                        _this5.catchcallback(error);
+                    if (_this9.catchcallback) {
+                        _this9.catchcallback(error);
                     } else {
                         throw error;
                     }
@@ -222,12 +319,12 @@
             } else {
                 Promise.all(Object.values(promise)).then(function (res) {
                     Object.keys(promise).forEach(function (key, index) {
-                        _this5.response[key] = res[index];
+                        _this9.response[key] = res[index];
                     });
-                    _this5._execTask();
+                    _this9._execTask();
                 }).catch(function (error) {
-                    if (_this5.catchcallback) {
-                        _this5.catchcallback(error);
+                    if (_this9.catchcallback) {
+                        _this9.catchcallback(error);
                     } else {
                         throw error;
                     }
@@ -235,16 +332,71 @@
             }
         }
 
-        _createClass(Adapter, [{
+        _createClass(_PromiseAdapter, [{
+            key: '_remove',
+            value: function _remove() {
+                var _this10 = this;
+
+                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+                list.forEach(function (path) {
+                    new PathObject(_this10.response, path).remove();
+                });
+            }
+        }, {
+            key: '_index',
+            value: function _index() {
+                var _this11 = this;
+
+                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+                list.forEach(function (_ref3) {
+                    var toPath = _ref3.toPath,
+                        to = _ref3.to,
+                        fromPath = _ref3.fromPath,
+                        from = _ref3.from,
+                        _ref3$move = _ref3.move,
+                        move = _ref3$move === undefined ? false : _ref3$move,
+                        _ref3$correspond = _ref3.correspond,
+                        correspond = _ref3$correspond === undefined ? true : _ref3$correspond;
+
+                    new PathObject(_this11.response, toPath || to).index(new PathObject(_this11.response, fromPath || from).pathList, move, correspond);
+                });
+            }
+        }, {
+            key: '_value',
+            value: function _value() {
+                var _this12 = this;
+
+                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+
+                list.forEach(function (_ref4) {
+                    var path = _ref4.path,
+                        to = _ref4.to,
+                        value = _ref4.value,
+                        _ref4$callback = _ref4.callback,
+                        callback = _ref4$callback === undefined ? null : _ref4$callback,
+                        _ref4$correspond = _ref4.correspond,
+                        correspond = _ref4$correspond === undefined ? true : _ref4$correspond;
+
+                    new PathObject(_this12.response, path || to).value(value, callback, correspond);
+                });
+            }
+        }, {
+            key: '_deepClone',
+            value: function _deepClone(obj) {
+                return JSON.parse(JSON.stringify(obj));
+            }
+        }, {
             key: '_execTask',
             value: function _execTask() {
-                var _this6 = this;
+                var _this13 = this;
 
-                this.taskQueue.forEach(function (_ref) {
-                    var taskName = _ref.taskName,
-                        argument = _ref.argument;
+                this.taskQueue.forEach(function (_ref5) {
+                    var taskName = _ref5.taskName,
+                        argument = _ref5.argument;
 
-                    _this6[taskName].apply(_this6, Array.prototype.slice.apply(argument));
+                    _this13[taskName].apply(_this13, Array.prototype.slice.apply(argument));
                 });
             }
         }, {
@@ -262,40 +414,9 @@
                 return this._setTask('_remove', arguments);
             }
         }, {
-            key: '_remove',
-            value: function _remove() {
-                var _this7 = this;
-
-                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-                list.forEach(function (path) {
-                    new PathObject(_this7.response, path).remove();
-                });
-            }
-        }, {
             key: 'index',
             value: function index() {
                 return this._setTask('_index', arguments);
-            }
-        }, {
-            key: '_index',
-            value: function _index() {
-                var _this8 = this;
-
-                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-                list.forEach(function (_ref2) {
-                    var toPath = _ref2.toPath,
-                        to = _ref2.to,
-                        fromPath = _ref2.fromPath,
-                        from = _ref2.from,
-                        _ref2$move = _ref2.move,
-                        move = _ref2$move === undefined ? false : _ref2$move,
-                        _ref2$correspond = _ref2.correspond,
-                        correspond = _ref2$correspond === undefined ? true : _ref2$correspond;
-
-                    new PathObject(_this8.response, toPath || to).index(new PathObject(_this8.response, fromPath || from).pathList, move, correspond);
-                });
             }
         }, {
             key: 'value',
@@ -303,23 +424,9 @@
                 return this._setTask('_value', arguments);
             }
         }, {
-            key: '_value',
-            value: function _value() {
-                var _this9 = this;
-
-                var list = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-
-                list.forEach(function (_ref3) {
-                    var path = _ref3.path,
-                        to = _ref3.to,
-                        value = _ref3.value,
-                        _ref3$callback = _ref3.callback,
-                        callback = _ref3$callback === undefined ? null : _ref3$callback,
-                        _ref3$correspond = _ref3.correspond,
-                        correspond = _ref3$correspond === undefined ? true : _ref3$correspond;
-
-                    new PathObject(_this9.response, path || to).value(value, callback, correspond);
-                });
+            key: '_then',
+            value: function _then(callback) {
+                callback(this._deepClone(this.response));
             }
         }, {
             key: 'then',
@@ -327,53 +434,16 @@
                 return this._setTask('_then', arguments);
             }
         }, {
-            key: '_then',
-            value: function _then(callback) {
-                callback(this._deepClone(this.response));
-            }
-        }, {
             key: 'catch',
             value: function _catch(callback) {
                 this.catchcallback = callback;
             }
-        }, {
-            key: '_catch',
-            value: function _catch(error) {}
-        }, {
-            key: '_deepClone',
-            value: function _deepClone(obj) {
-                return JSON.parse(JSON.stringify(obj));
-            }
         }]);
 
-        return Adapter;
+        return _PromiseAdapter;
     }();
 
-    var _DataAdapter = function (_Adapter) {
-        _inherits(_DataAdapter, _Adapter);
-
-        function _DataAdapter(data, rules) {
-            _classCallCheck(this, _DataAdapter);
-
-            var _this10 = _possibleConstructorReturn(this, (_DataAdapter.__proto__ || Object.getPrototypeOf(_DataAdapter)).call(this, Promise.resolve(data)));
-
-            rules && _this10.dealRules(rules);
-            return _this10;
-        }
-
-        _createClass(_DataAdapter, [{
-            key: 'dealRules',
-            value: function dealRules(rules) {
-                for (var fnName in rules) {
-                    this[fnName](rules[fnName]);
-                }
-            }
-        }]);
-
-        return _DataAdapter;
-    }(Adapter);
-
-    exports.default = Adapter;
+    exports.default = _PromiseAdapter;
     var DataAdapter = exports.DataAdapter = _DataAdapter;
 });
 //# sourceMappingURL=index.js.map

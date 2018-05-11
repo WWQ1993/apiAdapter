@@ -28,7 +28,7 @@
     var promise1 = Promise.resolve(JSON.parse(_data2.default));
     var promise2 = Promise.resolve(JSON.parse(_data4.default));
 
-    new _index.DataAdapter({
+    var data = new _index.DataAdapter({
         a: JSON.parse(_data2.default),
         b: JSON.parse(_data4.default)
     }, {
@@ -44,9 +44,8 @@
             to: 'testValue',
             value: 'dd'
         }]
-    }).then(function (data) {
-        console.log(JSON.stringify(data, null, 4));
     });
+    console.log(JSON.stringify(data, null, 4));
 
     new _index2.default({
         a: promise1,
@@ -72,9 +71,9 @@
             return value + index;
         }
     }]).then(function (data) {
-        // console.log(JSON.stringify(data, null, 4));
+        console.log(JSON.stringify(data, null, 4));
     }).catch(function (e) {
-        // console.log(e);
+        console.log(e);
     });
 });
 //# sourceMappingURL=index.js.map
