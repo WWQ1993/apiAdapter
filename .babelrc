@@ -1,5 +1,11 @@
 {
   "presets": [
-    ["es2015", {"modules": "umd"}]
+    [
+      "env",
+      {
+        "modules": "umd"
+      }
+    ]
   ],
-  "plugins": ["transform-class-properties"]}
+  "plugins": ["transform-class-properties"]
+}
