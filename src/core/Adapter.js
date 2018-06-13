@@ -2,6 +2,7 @@
  * input
  * output
  */
+import Transformer from './Transformer';
 class Adapter {
 
     response = {};
@@ -12,7 +13,7 @@ class Adapter {
 
     _remove(list = []) {
         list.forEach(path => {
-            new PathObject(this.response, path).remove();
+            new Transformer(this.response, path).remove();
         });
     }
 
@@ -25,13 +26,13 @@ class Adapter {
             move = false, 
             correspond = true 
         }) => {
-            new PathObject(this.response, toPath || to).index(new PathObject(this.response, fromPath || from).pathList, move, correspond);
+            new Transformer(this.response, toPath || to).index(new Transformer(this.response, fromPath || from).pathList, move, correspond);
         });
     }
 
     _value(list = []) {
         list.forEach(({ path, to, value, callback = null, correspond = true }) => {
-            new PathObject(this.response, path || to).value(value, callback, correspond);
+            new Transformer(this.response, path || to).value(value, callback, correspond);
         });
     }
 
@@ -39,3 +40,5 @@ class Adapter {
         return JSON.parse(JSON.stringify(obj));
     }
 }
+
+export default Adapter;
