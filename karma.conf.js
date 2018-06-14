@@ -7,7 +7,6 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
     frameworks: ['mocha', 'power-assert'],
@@ -15,7 +14,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'src/index.js',
       'test/**/*spec.js',
     ],
 
@@ -28,13 +26,11 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/index.spec.js': [ 'espower', 'webpack' ],
-      'src/index.js': [ 'webpack' ]
+      'test/index.spec.js': ['webpack', 'sourcemap']
     },
 
-    webpack: require('./webpack.config.js'),
     
-
+    webpack: require('./webpack.config.js'),
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
